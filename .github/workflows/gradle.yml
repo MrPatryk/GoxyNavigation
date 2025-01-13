@@ -93,6 +93,23 @@ jobs:
         git tag "${{ env.NEW_TAG }}"
         git push origin "${{ env.NEW_TAG }}"
 
+
+    - name: Get commit messages
+      id: get_commits
+      run: |
+        if [ -z "$TAG" ]; then
+          echo "No previous tag found. Using all commits."
+          COMMITS=$(git log --pretty=format:"%h - %s")
+        else
+          echo "Previous tag: $TAG"
+          COMMITS=$(git log $TAG..HEAD --pretty=format:"%h - %s")
+        fi
+        echo "$COMMITS" > commits.txt
+        echo "COMMITS=$COMMITS" >> $GITHUB_ENV
+
+    - name: Debug commit messages
+      run: cat commits.txt
+          
     - name: Create Release with commit messages
       uses: softprops/action-gh-release@v2
       with:

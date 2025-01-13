@@ -45,16 +45,20 @@ jobs:
         name: plugin-jar
         path: build/libs/*.jar
 
+    - name: Get commit messages
+      id: commit_messages
+      run: echo "COMMITS=$(git log --pretty=format:'- %s' $(git describe --tags --abbrev=0)..HEAD | tr '\n' ';')" >> $GITHUB_ENV
+
     - name: Create Release with commit messages
       uses: softprops/action-gh-release@v2
       with:
         tag_name: ${{ github.ref_name }}
         body: |
           ## Zmiany w tej wersji:
-          $(git log --pretty=format:"- %s" $(git describe --tags --abbrev=0)..HEAD)
+          ${{ env.COMMITS }}
         files: build/libs/*.jar
       env:
-        GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
     # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
     #

@@ -36,13 +36,6 @@ jobs:
     - name: Build with Gradle Wrapper
       run: ./gradlew :plugin-core:shadowJar
 
-    - name: Rename generated JAR file
-      run: |
-        JAR_FILE=$(ls plugin-core/build/libs/*.jar | head -n 1)
-        echo "Found JAR file: $JAR_FILE"
-        mv "$JAR_FILE" "plugin-core/build/libs/Navigation-${{ env.NEW_TAG }}.jar"
-        echo "Renamed to: plugin-core/build/libs/Navigation-${{ env.NEW_TAG }}.jar"
-
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
@@ -82,7 +75,14 @@ jobs:
         NEW_TAG="v$MAJOR.$MINOR.$NEW_PATCH"
         echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
         echo "Nowy tag: $NEW_TAG"
-
+        
+    - name: Rename generated JAR file
+      run: |
+        JAR_FILE=$(ls plugin-core/build/libs/*.jar | head -n 1)
+        echo "Found JAR file: $JAR_FILE"
+        mv "$JAR_FILE" "plugin-core/build/libs/Navigation-${{ env.NEW_TAG }}.jar"
+        echo "Renamed to: plugin-core/build/libs/Navigation-${{ env.NEW_TAG }}.jar"
+        
     - name: Configure Git user
       run: |
         git config user.name "[BOT] Release"

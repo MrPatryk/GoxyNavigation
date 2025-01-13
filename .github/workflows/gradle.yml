@@ -72,7 +72,7 @@ jobs:
     - name: Calculate new version tag
       id: new_tag
       run: |
-        TAG=$(echo "${{ env.TAG }}" | sed 's/^v//')  # Usuń prefix 'v'
+        TAG=$(echo "${{ env.TAG }}" | sed 's/^v//')
         MAJOR=$(echo $TAG | cut -d. -f1)
         MINOR=$(echo $TAG | cut -d. -f2)
         PATCH=$(echo $TAG | cut -d. -f3)

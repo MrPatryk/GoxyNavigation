@@ -20,7 +20,6 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
 
-    # Configure Gradle for optimal use in GitHub Actions, including caching of downloaded dependencies.
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
 
@@ -39,23 +38,27 @@ jobs:
     - name: Get latest commit messages
       id: commit_messages
       run: |
-        TAG=$(git describe --tags --abbrev=0 || echo "v0.0.0")  # Pobierz ostatni tag, jeśli brak, użyj "v0.0.0"
+        TAG=$(git tag | sort -V | tail -n 1 || echo "v0.0.0")  # Pobierz ostatni tag lub ustaw "v0.0.0" jako domyślny
         COMMITS=$(git log --pretty=format:'- %s' $TAG..HEAD | tr '\n' ';')  # Wiadomości commitów od ostatniego tagu do HEAD
         echo "COMMITS=$COMMITS" >> $GITHUB_ENV
         echo "TAG=$TAG" >> $GITHUB_ENV
 
-    - name: List build/libs contents
-      run: ls build/libs/
+    - name: Check build/libs contents
+      run: |
+        if [ -d "build/libs" ]; then
+          ls build/libs/
+        else
+          echo "Brak katalogu build/libs. Kompilacja mogła nie zakończyć się powodzeniem."
+        fi
 
     - name: Calculate new version tag
       id: new_tag
       run: |
-        # Pobierz ostatni tag i zwiększ numer wersji
         TAG=$(echo ${{ env.TAG }} | sed 's/^v//')  # Usuń prefix 'v'
         VERSION=$((TAG + 1))  # Zwiększ numer wersji o 1
         NEW_TAG="v$VERSION"
         echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
-        echo "New tag is $NEW_TAG"
+        echo "Nowy tag to $NEW_TAG"
 
     - name: Create Git tag for release
       run: |

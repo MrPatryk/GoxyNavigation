@@ -62,9 +62,9 @@ jobs:
         echo "COMMITS=$COMMITS" >> $GITHUB_ENV
         echo "TAG=$TAG" >> $GITHUB_ENV
 
-    - name: Get last tag or set default
+    - name: Get last tag
       run: |
-        TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+        TAG=$(git tag --sort=-creatordate | head -n 1)
         echo "Using tag: $TAG"
         echo "TAG=$TAG" >> $GITHUB_ENV
         

@@ -38,12 +38,17 @@ jobs:
     - name: Get latest commit messages
       id: commit_messages
       run: |
-        TAG=$(git tag | sort -V | tail -n 1 || echo "v0.0.0")  # Pobierz ostatni tag lub ustaw "v0.0.0" jako domyślny
-        COMMITS=$(git log --pretty=format:'- %s' $TAG..HEAD | tr '\n' ';')  # Wiadomości commitów od ostatniego tagu do HEAD
+        TAG_COUNT=$(git tag | wc -l)
+        if [ "$TAG_COUNT" -eq 0 ]; then
+          TAG="v0.0.0"
+        else
+          TAG=$(git describe --tags --abbrev=0)
+        fi
+        COMMITS=$(git log --pretty=format:'- %s' $TAG..HEAD | tr '\n' ';' || echo "No commits since last tag")
         echo "COMMITS=$COMMITS" >> $GITHUB_ENV
         echo "TAG=$TAG" >> $GITHUB_ENV
 
-    - name: Check build/libs contents
+    - name: Check plugin-core/build/libs contents
       run: |
         if [ -d "plugin-core/build/libs" ]; then
           ls plugin-core/build/libs/
@@ -59,12 +64,20 @@ jobs:
     - name: Calculate new version tag
       id: new_tag
       run: |
-        TAG=$(echo ${{ env.TAG }} | sed 's/^v//')  # Usuń prefix 'v'
-        VERSION=$((TAG + 1))  # Zwiększ numer wersji o 1
-        NEW_TAG="v$VERSION"
+        TAG=$(echo "${{ env.TAG }}" | sed 's/^v//')  # Usuń prefix 'v'
+        MAJOR=$(echo $TAG | cut -d. -f1)
+        MINOR=$(echo $TAG | cut -d. -f2)
+        PATCH=$(echo $TAG | cut -d. -f3)
+        NEW_PATCH=$((PATCH + 1))
+        NEW_TAG="v$MAJOR.$MINOR.$NEW_PATCH"
         echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
-        echo "Nowy tag to $NEW_TAG"
+        echo "Nowy tag: $NEW_TAG"
 
+    - name: Configure Git user
+      run: |
+        git config user.name "[BOT] Release"
+        git config user.email "actions@github.com"
+    
     - name: Create Git tag for release
       run: |
         git tag "${{ env.NEW_TAG }}"

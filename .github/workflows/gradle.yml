@@ -45,10 +45,10 @@ jobs:
 
     - name: Check build/libs contents
       run: |
-        if [ -d "build/libs" ]; then
-          ls build/libs/
+        if [ -d "plugin-core/build/libs" ]; then
+          ls plugin-core/build/libs/
         else
-          echo "Brak katalogu build/libs. Kompilacja mogła nie zakończyć się powodzeniem."
+          echo "Brak katalogu plugin-core/build/libs. Kompilacja mogła nie zakończyć się powodzeniem."
         fi
 
     - name: Calculate new version tag
@@ -72,7 +72,7 @@ jobs:
         body: |
           ## Zmiany w tej wersji:
           ${{ env.COMMITS }}
-        files: build/libs/Navigation-${{ env.NEW_TAG }}.jar  # Nazwa pliku JAR z nowym tagiem
+        files: plugin-core/build/libs/Navigation-${{ env.NEW_TAG }}.jar
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

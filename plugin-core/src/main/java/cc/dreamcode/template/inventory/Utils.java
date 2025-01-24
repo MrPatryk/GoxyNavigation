@@ -15,33 +15,34 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Utils {
+    public BukkitMenuBuilder navMenu;
     @Inject
     private PluginConfig pluginConfig;
-    public BukkitMenuBuilder navMenu;
     private List<String> ignoreServers;
     @Getter
     private List<Server> publicServers;
-    public void reload(){
-        ignoreServers=this.pluginConfig.navMenuIgnoreServers;
+
+    public void reload() {
+        ignoreServers = this.pluginConfig.navMenuIgnoreServers;
         if (this.pluginConfig.navMenuSize <= 0) {
             throw new IllegalArgumentException("Menu nie moze miec rozmiaru mniejszego niz 1");
         }
         Map<Integer, ItemStack> items = new HashMap<>();
         ItemStack glassItem = new ItemBuilder(Objects.requireNonNull(XMaterial.GLASS_PANE.parseItem()).getType())
                 .setName(" ").toItemStack();
-        String[] filteredServerList=Arrays.stream(ServerRegistry.STATIC_SERVER_LIST).filter(name -> !ignoreServers.contains(name)).toArray(String[]::new);
+        String[] filteredServerList = Arrays.stream(ServerRegistry.STATIC_SERVER_LIST).filter(name -> !ignoreServers.contains(name)).toArray(String[]::new);
         publicServers = Arrays.stream(filteredServerList)
                 .map(name -> this.pluginConfig.customServers.stream()
                         .filter(aa -> aa.getId().equals(name))
                         .findAny()
-                        .orElse(new Server(name,name, ""))
+                        .orElse(new Server(name, name, ""))
                 )
                 .collect(Collectors.toList());
 
-        for (int i = 0; i < 9*this.pluginConfig.navMenuSize; i++) {
+        for (int i = 0; i < 9 * this.pluginConfig.navMenuSize; i++) {
             items.put(i, glassItem);
         }
-        if(!publicServers.isEmpty()) {
+        if (!publicServers.isEmpty()) {
             int upDownCenter = (int) Math.floor((double) this.pluginConfig.navMenuSize / 2) * 9;
             int totalServers = publicServers.size();
             int spacing = (totalServers >= 4) ? 1 : 2;
@@ -62,7 +63,8 @@ public class Utils {
                 this.pluginConfig.navMenuSize,
                 items);
     }
-    public BukkitMenu getMenu(){
+
+    public BukkitMenu getMenu() {
         return navMenu.buildWithItems();
     }
 }

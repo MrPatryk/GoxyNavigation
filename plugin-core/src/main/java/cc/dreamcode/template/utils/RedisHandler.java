@@ -20,45 +20,45 @@ import java.util.logging.Level;
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 public class RedisHandler {
     public static RedisClient redisClient;
-    private final PluginConfig pluginConfig;
     private static StatefulRedisConnection<String, String> connection;
     private static StatefulRedisPubSubConnection<String, String> pubSubConnection;
-    public static void setUri(RedisURI redisURI){
+    private final PluginConfig pluginConfig;
+
+    public static void setUri(RedisURI redisURI) {
         redisClient = RedisClient.create(redisURI);
         connection = redisClient.connect();
-        //this.pubSubConnection = redisClient.connectPubSub();
         subscribeToRedisChannel(GoxyApi.getNetworkManager().getServer().getName());
     }
-    public void init1(){
-        init(this.pluginConfig);
-    }
-    public static void init(PluginConfig pluginConfig){
-        String clientName = GoxyApi.getConfiguration().getServerId() +"--"+ UUID.randomUUID().toString();
+
+    public static void init(PluginConfig pluginConfig) {
+        String clientName = GoxyApi.getConfiguration().getServerId() + "--" + UUID.randomUUID().toString();
         RedisURI redisUri = RedisURI.create("redis://" + pluginConfig.redisConfig.login + ":" + pluginConfig.redisConfig.password + "@" + pluginConfig.redisConfig.uri);
         redisUri.setClientName(clientName);
         setUri(redisUri);
     }
-    public static void sendCommand(String command,String target){
-        try{
-            if(target.equals("all")){
+
+    public static void sendCommand(String command, String target) {
+        try {
+            if (target.equals("all")) {
                 for (String serverTarget : ServerRegistry.STATIC_SERVER_LIST) {
                     pubSubConnection.async().publish(serverTarget, command);
                 }
                 return;
             }
             pubSubConnection.async().publish(target, command);
-            //x.closeAsync();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-    public static void close(){
-        if(pubSubConnection!=null)pubSubConnection.close();
-        if(connection!=null)connection.close();
-        if(redisClient!=null)redisClient.close();
+
+    public static void close() {
+        if (pubSubConnection != null) pubSubConnection.close();
+        if (connection != null) connection.close();
+        if (redisClient != null) redisClient.close();
     }
+
     private static void subscribeToRedisChannel(String channelName) {
-        if(pubSubConnection==null){
+        if (pubSubConnection == null) {
             pubSubConnection = redisClient.connectPubSub();
         }
         pubSubConnection.addListener(new RedisPubSubListener<String, String>() {
@@ -70,7 +70,6 @@ public class RedisHandler {
 
             @Override
             public void message(String pattern, String channel, String message) {
-                // Nie używamy patternów, więc nie implementujemy
             }
 
             @Override
@@ -106,6 +105,10 @@ public class RedisHandler {
         } catch (Exception e) {
             Bukkit.getLogger().log(Level.SEVERE, "Błąd podczas obsługi wiadomości Redis: " + e.getMessage());
         }
+    }
+
+    public void init1() {
+        init(this.pluginConfig);
     }
 
 }

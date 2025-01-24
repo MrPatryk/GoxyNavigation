@@ -4,7 +4,6 @@
 //
 package cc.dreamcode.template.config;
 
-import cc.dreamcode.platform.persistence.StorageType;
 import cc.dreamcode.template.utils.StorageTypeAdjusted;
 import eu.okaeri.configs.OkaeriConfig;
 import eu.okaeri.configs.annotation.Comment;
@@ -20,14 +19,14 @@ public class RedisConfig extends OkaeriConfig {
     @Comment({"Jaki prefix ustawic dla danych?", "Dla FLAT prefix nie jest uzywany."})
     @CustomKey("prefix")
     public String prefix;
-    @Comments({@Comment("Konfiguracja REDIS'a"),@Comment("Host:Port Redisa")})
-    public String uri="";
+    @Comments({@Comment("Konfiguracja REDIS'a"), @Comment("Host:Port Redisa")})
+    public String uri = "";
     @Comment("Login do Redisa")
     @CustomKey("login")
-    public String login="default";
+    public String login = "default";
     @Comment("Hasło do Redisa")
     @CustomKey("password")
-    public String password="";
+    public String password = "";
 
 //    public RedisConfig() {
 //        this.storageType = StorageTypeAdjusted.REDIS;
@@ -86,7 +85,6 @@ public class RedisConfig extends OkaeriConfig {
         this.prefix = prefix;
         this.uri = uri;
     }
-
 
 
 }

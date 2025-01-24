@@ -1,11 +1,13 @@
 # Plugin nawigacji Minecraft 🚀
 
-Ten plugin służy do nawigacji pomiędzy serwerami w sieci Goxy 🌐. Gracze mogą łatwo przemieszczać się pomiędzy serwerami za pomocą GUI i wysyłać komendy (np. przez admina/konsole) do konkretnych serwerów przez Redis 🔧.
+Ten plugin służy do nawigacji pomiędzy serwerami w sieci Goxy 🌐. Gracze mogą łatwo przemieszczać się pomiędzy serwerami
+za pomocą GUI i wysyłać komendy (np. przez admina/konsole) do konkretnych serwerów przez Redis 🔧.
 
 ## Wymagania 🛠️
 
 - **Plugin Goxy**: Wymaga zainstalowanego i skonfigurowanego pluginu Goxy z [goxy.io](https://goxy.io) ✅.
-- **Redis**: Plugin używa Redis do wysyłania komend na serwery, więc upewnij się, że Redis jest poprawnie skonfigurowany w pliku konfiguracyjnym ⚙️.
+- **Redis**: Plugin używa Redis do wysyłania komend na serwery, więc upewnij się, że Redis jest poprawnie skonfigurowany
+  w pliku konfiguracyjnym ⚙️.
 
 ## Funkcje ✨
 
@@ -16,9 +18,11 @@ Ten plugin służy do nawigacji pomiędzy serwerami w sieci Goxy 🌐. Gracze mo
 
 ## Instalacja i Konfiguracja ⚙️
 
-1. **Zainstaluj Plugin Goxy**: Upewnij się, że Goxy jest zainstalowane i poprawnie skonfigurowane w Twojej sieci. Bez Goxy plugin nie będzie działał.
+1. **Zainstaluj Plugin Goxy**: Upewnij się, że Goxy jest zainstalowane i poprawnie skonfigurowane w Twojej sieci. Bez
+   Goxy plugin nie będzie działał.
 2. **Skonfiguruj Redis**: Dodaj ustawienia Redisa w pliku `config.yml`, aby włączyć wysyłanie komend.
-3. **Skonfiguruj GUI**: Zmodyfikuj sekcję `gui-config` w pliku konfiguracyjnym, aby dostosować nazwy serwerów, opisy oraz serwery do ignorowania.
+3. **Skonfiguruj GUI**: Zmodyfikuj sekcję `gui-config` w pliku konfiguracyjnym, aby dostosować nazwy serwerów, opisy
+   oraz serwery do ignorowania.
 
 ---
 
@@ -51,12 +55,12 @@ gui-config.name: '&c&lWybór serwera'
 gui-config.size: 3
 # Serwery do ignorowania (według ID)
 gui-config.ignore-servers:
-- hub
+  - hub
 # Customowe nazwy serwerów i ich opisy
 gui-config.custom-servers:
-- id: test
-  name: '&bCustom nazwa'
-  lore: '&7Defaultowy opis serwera #1'
+  - id: test
+    name: '&bCustom nazwa'
+    lore: '&7Defaultowy opis serwera #1'
 ```
 
 ## Obrazki

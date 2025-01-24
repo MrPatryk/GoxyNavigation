@@ -76,8 +76,7 @@ project(":plugin-core:nms").subprojects {
             withSourcesJar()
             withJavadocJar()
         }
-    }
-    else {
+    } else {
         java {
             sourceCompatibility = JavaVersion.VERSION_17
             targetCompatibility = JavaVersion.VERSION_17

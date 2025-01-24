@@ -9,7 +9,9 @@ import eu.okaeri.configs.annotation.Comments;
 import eu.okaeri.configs.annotation.CustomKey;
 import eu.okaeri.configs.annotation.Header;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @Configuration(child = "config.yml")
 @Header("## Dream-Template (Main-Config) ##")
@@ -27,7 +29,7 @@ public class PluginConfig extends OkaeriConfig {
 
     public StorageConfig storageConfig = new StorageConfig("dreamtemplate");
 
-    @Comments({@Comment("Ustawienia menu z wyborem serwera"),@Comment("Nazwa GUI")})
+    @Comments({@Comment("Ustawienia menu z wyborem serwera"), @Comment("Nazwa GUI")})
     @CustomKey("gui-config.name")
     public String navMenuName = "&c&lWybór serwera";
 
@@ -43,6 +45,6 @@ public class PluginConfig extends OkaeriConfig {
     @CustomKey("gui-config.custom-servers")
 
     public List<Server> customServers = Arrays.asList(
-            new Server("server1","&bCustom nazwa", "&7Defaultowy opis serwera #1")
+            new Server("server1", "&bCustom nazwa", "&7Defaultowy opis serwera #1")
     );
 }

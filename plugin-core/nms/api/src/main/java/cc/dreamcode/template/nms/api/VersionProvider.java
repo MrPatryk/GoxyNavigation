@@ -28,7 +28,8 @@ public class VersionProvider {
                 .map(versionClass -> {
                     try {
                         return versionClass.getConstructor().newInstance();
-                    } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                    } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                             NoSuchMethodException e) {
                         throw new RuntimeException("Could not initialize VersionAccessor for version " + version, e);
                     }
                 })
@@ -55,8 +56,7 @@ public class VersionProvider {
             }
 
             return entry.getValue();
-        }
-        catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException("Cannot find server version", e);
         }
     }

@@ -1,15 +1,10 @@
 package cc.dreamcode.template.utils;
-import cc.dreamcode.template.utils.Server;
+
 import eu.okaeri.configs.schema.GenericsDeclaration;
 import eu.okaeri.configs.serdes.DeserializationData;
 import eu.okaeri.configs.serdes.ObjectSerializer;
 import eu.okaeri.configs.serdes.SerializationData;
 import lombok.NonNull;
-import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.Yaml;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class ServerSerializer implements ObjectSerializer<Server> {
 

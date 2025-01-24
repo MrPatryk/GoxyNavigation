@@ -22,15 +22,15 @@ import java.util.List;
 
 import static cc.dreamcode.template.utils.RedisHandler.sendCommand;
 
-@Command(name = "navigation",aliases = {"nav"})
+@Command(name = "navigation", aliases = {"nav"})
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 public class NavigateCommand implements CommandBase {
 
     private final Holder totemMenuHolder;
 
     private final MessageConfig messageConfig;
-     private final PluginConfig pluginConfig;
-    private String[] list= ServerRegistry.STATIC_SERVER_LIST;
+    private final PluginConfig pluginConfig;
+    private String[] list = ServerRegistry.STATIC_SERVER_LIST;
 //    public NavigateCommand(StatefulRedisConnection redis){
 //        this.redisPubSubConnection=redis;
 //    }
@@ -50,8 +50,8 @@ public class NavigateCommand implements CommandBase {
     BukkitNotice send(@Arg String serverId, @Args String[] args) {
         List<String> serverList = new ArrayList<>(Arrays.asList(ServerRegistry.STATIC_SERVER_LIST));
         serverList.add("all");
-        if(!(serverList.contains(serverId))){
-            return this.messageConfig.commandServerInvalid.with("list",String.join(", ", ServerRegistry.STATIC_SERVER_LIST));
+        if (!(serverList.contains(serverId))) {
+            return this.messageConfig.commandServerInvalid.with("list", String.join(", ", ServerRegistry.STATIC_SERVER_LIST));
         }
 
         String command = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
@@ -59,9 +59,9 @@ public class NavigateCommand implements CommandBase {
         message.addProperty("command", command);
 
         TemplatePlugin.getPlugin(TemplatePlugin.class).getLogger().info("Wysyłanie komendy do serwera " + serverId + ": " + command);
-        try{
+        try {
 
-            sendCommand(message.toString(),serverId);
+            sendCommand(message.toString(), serverId);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -80,8 +80,7 @@ public class NavigateCommand implements CommandBase {
             this.totemMenuHolder.update();
             return this.messageConfig.reloaded
                     .with("time", TimeUtil.format(System.currentTimeMillis() - time));
-        }
-        catch (NullPointerException | OkaeriException e) {
+        } catch (NullPointerException | OkaeriException e) {
             e.printStackTrace();
 
             return this.messageConfig.reloadError
